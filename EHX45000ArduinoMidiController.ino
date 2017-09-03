@@ -37,13 +37,17 @@ const byte REMOTE_STOP_TRIGGER3_PROGRAM = 0x0b;
 byte input[INPUT_BUFFER_SIZE];
 int pos = 0;
 
+int REMOTE_PLAY_PIN1 = 8;
+int REMOTE_PLAY_PIN2 = 9;
+
 MidiOutMessage programs[NUM_PROGRAMS];
 
 void setup() {
   Serial.begin(31250);  // 31250
-  pinMode(12, OUTPUT);
-  pinMode(11, OUTPUT);
-
+  pinMode(REMOTE_PLAY_PIN1, OUTPUT);
+  pinMode(REMOTE_PLAY_PIN2, OUTPUT);
+  digitalWrite(REMOTE_PLAY_PIN1, LOW);
+  digitalWrite(REMOTE_PLAY_PIN2, LOW);
   mapPrograms();
 }
 
@@ -117,17 +121,17 @@ void writeByte(byte data) {
 }
 
 void sendCDJRemoteStart() {
-  digitalWrite(12, LOW); 
-  digitalWrite(11, HIGH); 
+  digitalWrite(REMOTE_PLAY_PIN2, LOW); 
+  digitalWrite(REMOTE_PLAY_PIN1, HIGH); 
   delay(10);
-  digitalWrite(11, LOW); 
+  digitalWrite(REMOTE_PLAY_PIN1, LOW); 
 }
 
 void sendCDJRemoteStop() {
-  digitalWrite(11, LOW); 
-  digitalWrite(12, HIGH); 
+  digitalWrite(REMOTE_PLAY_PIN1, LOW); 
+  digitalWrite(REMOTE_PLAY_PIN2, HIGH); 
   delay(10);
-  digitalWrite(12, LOW); 
+  digitalWrite(REMOTE_PLAY_PIN2, LOW); 
 }
 
 void triggerCDJ(byte inputProgram) {
